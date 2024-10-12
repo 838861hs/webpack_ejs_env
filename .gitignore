@@ -1,0 +1,28 @@
+# Node.js関連の除外ファイル
+node_modules/
+npm-debug.log
+yarn-error.log
+package-lock.json
+yarn.lock
+
+# Webpack関連
+dist/
+
+# ログファイル
+*.log
+
+# OS固有のファイル
+.DS_Store
+Thumbs.db
+
+# エディタやIDE固有の設定ファイル
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# 一時ファイル
+*.tmp
+*.swp
+*.bak
+*.orig
