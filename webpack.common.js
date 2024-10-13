@@ -1,52 +1,56 @@
-const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const path = require('path');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
-  entry: './src/js/main.js',  // エントリーポイント
+  entry: './src/js/main.js',
   output: {
     filename: 'bundle.js',
     path: path.resolve(__dirname, 'dist'),
-    clean: true,  // ビルド先をクリーンアップ
-    publicPath: '/',  // 正しいパスを設定
+    clean: true,
   },
   module: {
     rules: [
       {
-        test: /\.ejs$/,  // EJSファイルを処理
+        test: /\.ejs$/,
         use: [
           {
             loader: 'html-loader',
           },
           {
-            loader: 'ejs-plain-loader',  // ejs-plain-loaderを使用
-            options: {
-              esModule: false,  // CommonJS形式で扱う
-            },
+            loader: 'ejs-plain-loader',
           },
         ],
       },
       {
-        test: /\.scss$/,  // SCSSファイルを処理
-        use: ['style-loader', 'css-loader', 'sass-loader'],
+        test: /\.scss$/,
+        use: [
+          process.env.NODE_ENV === 'production'
+            ? MiniCssExtractPlugin.loader
+            : 'style-loader', // 開発環境では style-loader、本番環境では MiniCssExtractPlugin.loader を使用
+          'css-loader',
+          'sass-loader',
+        ],
       },
       {
-        test: /\.js$/,  // JSファイルを処理
+        test: /\.js$/,
         exclude: /node_modules/,
         use: {
           loader: 'babel-loader',
-          options: {
-            presets: ['@babel/preset-env'],
-          },
         },
       },
     ],
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: './src/ejs/index.ejs',  // EJSテンプレート
-      filename: 'index.html',  // 出力されるHTMLファイル名
-      inject: true,  // 自動挿入を無効化
-      minify: false,  // 最適化を無効にする
+      template: './src/ejs/index.ejs',
+      filename: 'index.html',
+      inject: true,
+    }),
+    new MiniCssExtractPlugin({
+      filename: process.env.NODE_ENV === 'production'
+        ? 'styles/[name].[contenthash].css'
+        : 'styles/[name].css',
     }),
   ],
 };

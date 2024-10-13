@@ -1,16 +1,33 @@
 const { merge } = require('webpack-merge');
 const common = require('./webpack.common.js');
-const TerserPlugin = require('terser-webpack-plugin');
 const path = require('path');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');  // CSSの抽出プラグイン
 
 module.exports = merge(common, {
-  mode: 'production',  // 本番モード
-  optimization: {
-    minimize: true,
-    minimizer: [new TerserPlugin()],  // JavaScriptの圧縮
-  },
+  mode: 'production',
   output: {
-    filename: 'bundle.[contenthash].js',  // キャッシュバスティング用にハッシュを追加
+    filename: 'bundle.[contenthash].js',  // キャッシュバスティングを防ぐためにハッシュを付加
     path: path.resolve(__dirname, 'dist'),
+    clean: true,  // 古いファイルを削除
+  },
+  module: {
+    rules: [
+      {
+        test: /\.scss$/,
+        use: [
+          MiniCssExtractPlugin.loader,  // CSSを分離して抽出
+          'css-loader',  // CSSをJavaScriptに変換
+          'sass-loader',  // SCSSをCSSに変換
+        ],
+      },
+    ],
+  },
+  plugins: [
+    new MiniCssExtractPlugin({
+      filename: 'styles/[name].[contenthash].css',  // 出力されるCSSファイル名
+    }),
+  ],
+  optimization: {
+    minimize: true,  // 最小化を有効化
   },
 });
