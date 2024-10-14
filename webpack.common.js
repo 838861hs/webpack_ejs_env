@@ -1,11 +1,25 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
+const fs = require('fs');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
+const ejsFiles = fs.readdirSync('./src/ejs').filter(file => file.endsWith('.ejs'));
+
+// src/jsディレクトリ内のすべてのJavaScriptファイルをエントリーポイントとして取得
+const jsFiles = fs.readdirSync('./src/js').reduce((entries, file) => {
+  if (file.endsWith('.js')) {
+    const name = file.replace('.js', '');
+    entries[name] = `./src/js/${file}`;
+  }
+  return entries;
+}, {});
+
+
+
 module.exports = {
-  entry: './src/js/main.js',
+  entry: jsFiles,
   output: {
-    filename: 'bundle.js',
+    filename: 'js/[name].js',
     path: path.resolve(__dirname, 'dist'),
     clean: true,
   },
@@ -34,7 +48,7 @@ module.exports = {
         use: [
           process.env.NODE_ENV === 'production'
             ? MiniCssExtractPlugin.loader
-            : 'style-loader', // 開発環境では style-loader、本番環境では MiniCssExtractPlugin.loader を使用
+            : 'style-loader',
           'css-loader',
           'sass-loader',
         ],
@@ -49,10 +63,13 @@ module.exports = {
     ],
   },
   plugins: [
-    new HtmlWebpackPlugin({
-      template: './src/ejs/index.ejs',
-      filename: 'index.html',
-      inject: true,
+    ...ejsFiles.map(file => {
+      const chunkName = file.replace('.ejs', '');
+      return new HtmlWebpackPlugin({
+        template: `./src/ejs/${file}`,
+        filename: file.replace('.ejs', '.html'),
+        chunks: [chunkName], // 対応するJSファイルのみを含む
+      });
     }),
     new MiniCssExtractPlugin({
       filename: process.env.NODE_ENV === 'production'

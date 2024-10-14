@@ -14,6 +14,7 @@ module.exports = merge(common, {
       paths: ['src/**/*.ejs', 'src/**/*.js', 'src/**/*.scss'],
       options: {
         usePolling: true,
+        interval: 1000,
       },
     },
   },

@@ -1,0 +1,12 @@
+@use 'common/header' as *;
+@use 'common/footer' as *;
+
+body {
+  background-color: #fefefe;
+  color: #fff;
+  p{
+    color: red;
+    font-size: 20px;
+    font-weight: bold;
+  }
+}
