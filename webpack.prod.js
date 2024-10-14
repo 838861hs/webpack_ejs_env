@@ -6,7 +6,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');  // CSSの抽�
 module.exports = merge(common, {
   mode: 'production',
   output: {
-    filename: 'bundle.[contenthash].js',  // キャッシュバスティングを防ぐためにハッシュを付加
+    filename: 'js/[name].js',  // JSファイルをjsフォルダにハッシュなしで出力
     path: path.resolve(__dirname, 'dist'),
     clean: true,  // 古いファイルを削除
   },
@@ -24,7 +24,7 @@ module.exports = merge(common, {
   },
   plugins: [
     new MiniCssExtractPlugin({
-      filename: 'styles/[name].[contenthash].css',  // 出力されるCSSファイル名
+      filename: 'styles/[name].css',  // CSSファイルはハッシュなしでstylesフォルダに出力
     }),
   ],
   optimization: {
