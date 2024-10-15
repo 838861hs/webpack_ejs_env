@@ -1,3 +1,3 @@
-import '../scss/about.scss';
+import '../scss/about.scss'
 
 console.log('about!!Test!!')
