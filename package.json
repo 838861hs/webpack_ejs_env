@@ -8,7 +8,13 @@
     "build": "webpack --config webpack.prod.js",
     "lint:css": "stylelint 'src/**/*.{css,scss}' --fix",
     "format": "prettier --write \"src/**/*.{js,scss,ejs}\"",
-    "dev": "webpack serve --config webpack.dev.js"
+    "dev": "webpack serve --config webpack.dev.js",
+    "prepare": "husky install"
+  },
+  "lint-staged": {
+    "*.js": "prettier --write",
+    "*.scss": "prettier --write",
+    "*.ejs": "prettier --write"
   },
   "keywords": [],
   "author": "",
@@ -21,6 +27,8 @@
     "ejs-plain-loader": "^1.4.0",
     "html-loader": "^5.1.0",
     "html-webpack-plugin": "^5.6.0",
+    "husky": "^9.1.6",
+    "lint-staged": "^15.2.10",
     "mini-css-extract-plugin": "^2.9.1",
     "prettier": "^3.3.3",
     "sass": "^1.79.5",

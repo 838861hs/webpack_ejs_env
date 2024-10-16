@@ -9,5 +9,13 @@
   "bracketSameLine": true,
   "arrowParens": "avoid",
   "endOfLine": "lf",
-  "printWidth": 80
+  "printWidth": 80,
+  "overrides": [
+    {
+      "files": "*.ejs",
+      "options": {
+        "parser": "html"
+      }
+    }
+  ]
 }
